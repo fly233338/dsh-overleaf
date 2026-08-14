@@ -1,7 +1,22 @@
 {
-  "name": "dsh-loadout",
+  "name": "dsh-overleaf",
   "version": "0.1.0",
   "description": "DSH bundle that exposes one Overleaf project through OverleafMCP",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fly233338/dsh-overleaf.git"
+  },
+  "homepage": "https://github.com/fly233338/dsh-overleaf#readme",
+  "bugs": {
+    "url": "https://github.com/fly233338/dsh-overleaf/issues"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "overleaf",
+    "mcp",
+    "latex"
+  ],
   "type": "module",
   "main": "./index.js",
   "exports": {
@@ -12,7 +27,8 @@
   "files": [
     "index.js",
     "cordis.patch.yml",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "license": "MIT",
   "engines": {

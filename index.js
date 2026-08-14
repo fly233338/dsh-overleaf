@@ -7,7 +7,7 @@ const overleafServer = require.resolve('@mjyoo2/overleaf-mcp')
 const SERVER_NAME = 'overleaf'
 const TOOL_CALL_TIMEOUT_MS = 60_000
 
-export const name = 'dsh-loadout'
+export const name = 'dsh-overleaf'
 export const inject = ['tools']
 
 export async function apply(ctx) {
@@ -16,7 +16,7 @@ export async function apply(ctx) {
 
   if (!projectId || !gitToken) {
     throw new Error(
-      'dsh-loadout: OVERLEAF_PROJECT_ID and OVERLEAF_GIT_TOKEN must be set before starting DSH',
+      'dsh-overleaf: OVERLEAF_PROJECT_ID and OVERLEAF_GIT_TOKEN must be set before starting DSH',
     )
   }
 
