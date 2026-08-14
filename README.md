@@ -1,12 +1,12 @@
 # dsh-overleaf
 
-Connect Overleaf projects to [DeepSeek Harness (DSH)](https://github.com/deepseek-ai/deepseek-harness) through [OverleafMCP](https://github.com/mjyoo2/overleafmcp).
+Connect multiple Overleaf projects to [DeepSeek Harness (DSH)](https://github.com/deepseek-ai/deepseek-harness) through [OverleafMCP](https://github.com/mjyoo2/overleafmcp).
 
 `dsh-overleaf` installs OverleafMCP as an npm dependency, starts it through MCP stdio, and exposes its tools to DSH. The OverleafMCP source is not copied into this project.
 
 ## Features
 
-- Browse and read Overleaf LaTeX files.
+- Browse and read files from multiple Overleaf projects.
 - Inspect document sections and section content.
 - Write files or sections back to Overleaf through Git.
 - Keep the DSH MCP Client provided by the DSH host.
@@ -15,7 +15,7 @@ Connect Overleaf projects to [DeepSeek Harness (DSH)](https://github.com/deepsee
 
 - DSH `0.1.0-rc.5` or a compatible release.
 - Node.js `22.19.0` or newer.
-- An Overleaf project ID and Git integration token.
+- An Overleaf Git integration token.
 
 ## Install
 
@@ -41,47 +41,54 @@ The npm installation command becomes available after this package is published.
 
 ## Configure
 
-DSH loads a gitignored `.env` before starting plugins. Put it in the directory from which you launch DSH, or in the DSH user directory (`$DSH_HOME/.env`; by default `%USERPROFILE%\.dsh\.env` on Windows):
+The plugin uses `dsh-overleaf.config.json` next to its `index.js`. If the file is missing, the plugin creates it on startup with this content:
 
-On Windows, create the user-level file with:
-
-```powershell
-$dshHome = if ($env:DSH_HOME) { $env:DSH_HOME } else { Join-Path $env:USERPROFILE '.dsh' }
-New-Item -ItemType Directory -Force -Path $dshHome | Out-Null
-notepad (Join-Path $dshHome '.env')
+```json
+{
+  "gitToken": "",
+  "projectIds": []
+}
 ```
 
-Then paste and save:
+Fill in one shared token and one project ID per line:
 
-```dotenv
-OVERLEAF_PROJECT_ID=your-project-id
-OVERLEAF_GIT_TOKEN=your-git-token
+```json
+{
+  "gitToken": "your-overleaf-git-token",
+  "projectIds": [
+    "project-id-a",
+    "project-id-b"
+  ]
+}
 ```
 
-Get `OVERLEAF_PROJECT_ID` from the `<id>` in the Overleaf project URL and create `OVERLEAF_GIT_TOKEN` under [Overleaf Account Settings → Git Integration](https://docs.overleaf.com/integrations-and-add-ons/git-integration-and-github-synchronization/git/git-integration-authentication-tokens).
+Get project IDs from the `<id>` in the Overleaf project URL. Create the Git token under [Overleaf Account Settings → Git Integration](https://docs.overleaf.com/integrations-and-add-ons/git-integration-and-github-synchronization/git/git-integration-authentication-tokens).
 
-Use the command that matches your DSH installation:
+Restart DSH after editing the file. The plugin reads it once at startup and generates the internal OverleafMCP project configuration. Do not edit the generated `.dsh-overleaf.projects.json` file.
 
-```powershell
-# DSH source checkout
-pnpm dsh web
+The plugin does not read `.env` and does not require Overleaf environment variables.
 
-# Installed DSH CLI
-dsh web
+## Use with the model
+
+Tell the model which project to handle:
+
+```text
+Please work on Overleaf project project-id-a and read its main.tex.
 ```
 
-`dsh-overleaf` reads the variables supplied by DSH and passes them to OverleafMCP; it does not read `.env` independently.
+The model first calls `mcp__overleaf__list_projects`, then passes the selected ID as `projectName` to subsequent Overleaf tools. Write operations require an explicit `commitMessage` and push a Git commit to Overleaf.
 
-The tools are available under the `mcp__overleaf__` namespace, including file listing, file reading, section inspection, status, and writing. Write operations require an explicit `commitMessage` and push a Git commit to Overleaf.
+Keep the token out of public source repositories and published package contents.
 
 ## Scope
 
-The current version connects one Overleaf project. It does not compile documents, review PDFs, switch between projects, or automate a browser.
-
-Use a dedicated test project for write operations, and never commit Overleaf credentials.
+The current version supports multiple Overleaf projects through one MCP tool group. It does not compile documents, review PDFs, or automate a browser.
 
 ## Links
 
 - [Project repository](https://github.com/fly233338/dsh-overleaf)
 - [OverleafMCP](https://github.com/mjyoo2/overleafmcp)
 - [DSH plugin guide](https://deepseek-harness.github.io/deepseek-harness/develop/basic/publish)
+- insert:
+    - id: dsh-overleaf
+      name: dsh-overleaf

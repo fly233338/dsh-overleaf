@@ -2,4 +2,6 @@ node_modules/
 pnpm-lock.yaml
 pnpm-workspace.yaml
 *.tgz
+.dsh-overleaf.config.json
+.dsh-overleaf.projects.json
 .env*
