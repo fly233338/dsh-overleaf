@@ -1,10 +1,10 @@
-# dsh-loadout AGENTS.md 简版计划
-
 ## 项目概述
 
-dsh-loadout 让 DSH 接入并操作 Overleaf 项目。
+DSH（DeepSeek Harness）是 DeepSeek 的开源 AI Agent 运行框架，也是一个通过插件扩展的编程助手。它负责运行 Agent、加载工具，并通过 MCP（Model Context Protocol，一种连接外部工具的协议）使用外部服务。
 
-DSH 可以读取 LaTeX 文件和章节，也可以修改内容并通过 Git 提交回 Overleaf。底层复用已有的 [OverleafMCP](https://github.com/mjyoo2/overleafmcp)。
+Overleaf 是在线 LaTeX 文档编辑和协作平台。dsh-loadout 是一个独立的 DSH 插件，复用已有的 [OverleafMCP](https://github.com/mjyoo2/overleafmcp)，将 Overleaf 项目接入 DSH。
+
+接入后，DSH 可以读取 Overleaf 项目中的 LaTeX 文件和章节，修改内容，并通过 Git 提交回 Overleaf。
 
 ## 实现思路
 
@@ -17,6 +17,19 @@ DSH 可以读取 LaTeX 文件和章节，也可以修改内容并通过 Git 提�
 `OVERLEAF_PROJECT_ID + OVERLEAF_GIT_TOKEN → Overleaf MCP → DSH 工具`
 
 第一版只支持一个 Overleaf 项目，暂不实现编译、PDF 审阅、多项目切换和浏览器自动化。
+
+
+## 参考项目
+- DSH源码：
+  - 地址：`https://github.com/deepseek-ai/deepseek-harness`
+  - 本地路径：`D:\Code\Agent\deepseek-harness`
+  - 用途：参考 MCP Client、bundle 和插件配置方式。
+
+- OverleafMCP：
+  - 地址：`https://github.com/mjyoo2/overleafmcp`
+  - 本地路径：`D:\Code\Agent\OverleafMCP`
+  - 用途：参考 Overleaf 工具、环境变量和 Git 写入流程。
+
 
 ## 工程方案
 
