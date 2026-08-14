@@ -41,14 +41,26 @@ The npm installation command becomes available after this package is published.
 
 ## Configure
 
-```powershell
-$env:OVERLEAF_PROJECT_ID = 'your-project-id'
-$env:OVERLEAF_GIT_TOKEN = 'your-git-token'
+DSH loads a gitignored `.env` before starting plugins. Put it in the directory from which you launch DSH, or in the DSH user directory (`$DSH_HOME/.env`; by default `%USERPROFILE%\.dsh\.env` on Windows):
 
-# Use the command that matches your DSH installation:
-pnpm dsh web
-# or: dsh web
+```dotenv
+OVERLEAF_PROJECT_ID=your-project-id
+OVERLEAF_GIT_TOKEN=your-git-token
 ```
+
+Get `OVERLEAF_PROJECT_ID` from the `<id>` in the Overleaf project URL and create `OVERLEAF_GIT_TOKEN` under [Overleaf Account Settings → Git Integration](https://docs.overleaf.com/integrations-and-add-ons/git-integration-and-github-synchronization/git/git-integration-authentication-tokens).
+
+Use the command that matches your DSH installation:
+
+```powershell
+# DSH source checkout
+pnpm dsh web
+
+# Installed DSH CLI
+dsh web
+```
+
+`dsh-overleaf` reads the variables supplied by DSH and passes them to OverleafMCP; it does not read `.env` independently.
 
 The tools are available under the `mcp__overleaf__` namespace, including file listing, file reading, section inspection, status, and writing. Write operations require an explicit `commitMessage` and push a Git commit to Overleaf.
 
