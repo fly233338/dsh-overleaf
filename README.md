@@ -43,6 +43,16 @@ The npm installation command becomes available after this package is published.
 
 DSH loads a gitignored `.env` before starting plugins. Put it in the directory from which you launch DSH, or in the DSH user directory (`$DSH_HOME/.env`; by default `%USERPROFILE%\.dsh\.env` on Windows):
 
+On Windows, create the user-level file with:
+
+```powershell
+$dshHome = if ($env:DSH_HOME) { $env:DSH_HOME } else { Join-Path $env:USERPROFILE '.dsh' }
+New-Item -ItemType Directory -Force -Path $dshHome | Out-Null
+notepad (Join-Path $dshHome '.env')
+```
+
+Then paste and save:
+
 ```dotenv
 OVERLEAF_PROJECT_ID=your-project-id
 OVERLEAF_GIT_TOKEN=your-git-token
