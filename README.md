@@ -1,15 +1,14 @@
 # dsh-overleaf
 
+[English](README.md) | [中文](README.zh-CN.md)
+
 Connect multiple Overleaf projects to [DeepSeek Harness (DSH)](https://github.com/deepseek-ai/deepseek-harness) through [OverleafMCP](https://github.com/mjyoo2/overleafmcp).
 
 `dsh-overleaf` installs OverleafMCP as an npm dependency, starts it through MCP stdio, and exposes its tools to DSH. The OverleafMCP source is not copied into this project.
 
 ## Features
 
-- Browse and read files from multiple Overleaf projects.
-- Inspect document sections and section content.
-- Write files or sections back to Overleaf through Git.
-- Keep the DSH MCP Client provided by the DSH host.
+Browse and read files from multiple Overleaf projects, inspect document sections and section content, write files or sections back to Overleaf through Git, and use the DSH MCP Client provided by the host. **Based on my experience, it is especially useful in the following scenarios: understanding an entire LaTeX project, automatically fixing LaTeX compilation errors, and unifying terminology and symbols throughout the document.**
 
 ## Requirements
 
@@ -21,18 +20,16 @@ Connect multiple Overleaf projects to [DeepSeek Harness (DSH)](https://github.co
 
 From a DSH source checkout:
 
-```powershell
-$dshPath = 'D:\path\to\deepseek-harness'
-$pluginPath = 'D:\path\to\dsh-overleaf'
-Set-Location $dshPath
+```
+cd /path/to/deepseek-harness
 pnpm install
 pnpm run build
-pnpm dsh plugin --profile web add $pluginPath
+pnpm dsh plugin --profile web add /path/to/dsh-overleaf
 ```
 
 If the DSH CLI is installed and available on `PATH`:
 
-```powershell
+```
 dsh plugin --profile web add dsh-overleaf
 dsh web
 ```
@@ -41,16 +38,7 @@ The npm installation command becomes available after this package is published.
 
 ## Configure
 
-The plugin uses `dsh-overleaf.config.json` next to its `index.js`. If the file is missing, the plugin creates it on startup with this content:
-
-```json
-{
-  "gitToken": "",
-  "projectIds": []
-}
-```
-
-Fill in one shared token and one project ID per line:
+The plugin uses `dsh-overleaf.config.json` next to its `index.js`. If the file is missing, the plugin creates it on startup with this content. Fill in one shared token and one project ID per line:
 
 ```json
 {
