@@ -29,6 +29,7 @@ Overleaf 是在线 LaTeX 文档编辑和协作平台。dsh-loadout 是一个独�
   - 地址：`https://github.com/mjyoo2/overleafmcp`
   - 本地路径：`D:\Code\Agent\OverleafMCP`
   - 用途：参考 Overleaf 工具、环境变量和 Git 写入流程。
+参考项目不可跨项目使用。参考项目只用于确认接口和约定；dsh-loadout 不通过本地路径、符号链接或复制源码依赖参考项目。运行时依赖必须在 `package.json` 中声明：DSH MCP Client 由 DSH 宿主通过 `peerDependencies` 提供，OverleafMCP 通过 npm `dependencies` 引入。
 
 
 ## 工程方案
@@ -48,4 +49,3 @@ Overleaf 是在线 LaTeX 文档编辑和协作平台。dsh-loadout 是一个独�
 - 每次完成改动都要提交 Git。
 - 改动完成后说明修改了哪些文件。
 - 同时说明每个文件具体改了什么。
-- 本阶段只创建并完善 `dsh-loadout/AGENTS.md`，暂不实现代码。

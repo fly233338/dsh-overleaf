@@ -1,0 +1,32 @@
+{
+  "name": "dsh-loadout",
+  "version": "0.1.0",
+  "description": "DSH bundle that exposes one Overleaf project through OverleafMCP",
+  "type": "module",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh-mcp-client": "^0.1.0-rc.5"
+  },
+  "dependencies": {
+    "@mjyoo2/overleaf-mcp": "1.0.0"
+  }
+}
