@@ -19,25 +19,35 @@ Connect Overleaf projects to [DeepSeek Harness (DSH)](https://github.com/deepsee
 
 ## Install
 
-For local development:
+From a DSH source checkout:
 
 ```powershell
+$dshPath = 'D:\path\to\deepseek-harness'
 $pluginPath = 'D:\path\to\dsh-overleaf'
-dsh plugin --profile web add $pluginPath
+Set-Location $dshPath
+pnpm install
+pnpm run build
+pnpm dsh plugin --profile web add $pluginPath
 ```
 
-After npm publication:
+If the DSH CLI is installed and available on `PATH`:
 
 ```powershell
 dsh plugin --profile web add dsh-overleaf
+dsh web
 ```
+
+The npm installation command becomes available after this package is published.
 
 ## Configure
 
 ```powershell
 $env:OVERLEAF_PROJECT_ID = 'your-project-id'
 $env:OVERLEAF_GIT_TOKEN = 'your-git-token'
-dsh web
+
+# Use the command that matches your DSH installation:
+pnpm dsh web
+# or: dsh web
 ```
 
 The tools are available under the `mcp__overleaf__` namespace, including file listing, file reading, section inspection, status, and writing. Write operations require an explicit `commitMessage` and push a Git commit to Overleaf.
