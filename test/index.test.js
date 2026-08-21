@@ -5,8 +5,8 @@ import { join } from 'node:path'
 import test from 'node:test'
 import {
   OVERLEAF_SYSTEM_PROMPT,
-  prepareOverleafConfig,
 } from '../index.js'
+import { prepareOverleafConfig } from '../config.js'
 
 async function makeTestDirectory() {
   return mkdtemp(join(tmpdir(), 'dsh-overleaf-'))

@@ -19,15 +19,23 @@
   ],
   "type": "module",
   "main": "./index.js",
+  "bin": {
+    "dsh-overleaf-mcp": "./mcp.js"
+  },
   "exports": {
     ".": "./index.js",
+    "./config": "./config.js",
+    "./mcp": "./mcp.js",
     "./cordis.patch.yml": "./cordis.patch.yml",
     "./package.json": "./package.json"
   },
   "files": [
     "index.js",
+    "config.js",
+    "mcp.js",
     "cordis.patch.yml",
     "README.md",
+    "README.zh-CN.md",
     "LICENSE"
   ],
   "scripts": {

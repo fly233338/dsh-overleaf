@@ -1,0 +1,37 @@
+import { existsSync } from 'node:fs'
+import { readFile, writeFile } from 'node:fs/promises'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+export const CONFIG_FILE_NAME = 'dsh-overleaf.config.json'
+export const RUNTIME_CONFIG_FILE_NAME = '.dsh-overleaf.projects.json'
+export const PACKAGE_DIRECTORY = dirname(fileURLToPath(import.meta.url))
+export const CONFIG_PATH = join(PACKAGE_DIRECTORY, CONFIG_FILE_NAME)
+export const RUNTIME_CONFIG_PATH = join(PACKAGE_DIRECTORY, RUNTIME_CONFIG_FILE_NAME)
+export const EMPTY_CONFIG = { gitToken: '', projectIds: [] }
+
+export function buildOverleafMcpConfig(config) {
+  return {
+    projects: Object.fromEntries(config.projectIds.map((projectId) => [
+      projectId,
+      {
+        projectId,
+        gitToken: config.gitToken,
+      },
+    ])),
+  }
+}
+
+export async function prepareOverleafConfig(
+  configPath = CONFIG_PATH,
+  runtimeConfigPath = RUNTIME_CONFIG_PATH,
+) {
+  if (!existsSync(configPath)) {
+    await writeFile(configPath, `${JSON.stringify(EMPTY_CONFIG, null, 2)}\n`, 'utf8')
+  }
+
+  const config = JSON.parse(await readFile(configPath, 'utf8'))
+  const mcpConfig = buildOverleafMcpConfig(config)
+  await writeFile(runtimeConfigPath, `${JSON.stringify(mcpConfig, null, 2)}\n`, 'utf8')
+  return runtimeConfigPath
+}
