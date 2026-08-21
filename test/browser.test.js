@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import { spawn } from 'node:child_process'
+import { createHash } from 'node:crypto'
 import { mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -59,6 +60,9 @@ test('browser mode syncs a Free project snapshot and exposes it through MCP', as
     assert.match(payload.content, /Clinical text/)
     assert.doesNotMatch(payload.content, /Later text/)
 
+    const mirroredMain = join(statePath, 'projects', createHash('sha256').update(projectId).digest('hex').slice(0, 24), 'main.tex')
+    await writeFile(mirroredMain, payload.content.replace('Original text.', 'Locally revised text.'))
+
     child.stdin.write(`${JSON.stringify({ jsonrpc: '2.0', id: 2, method: 'tools/call', params: {
       name: 'write_section',
       arguments: {
@@ -72,6 +76,7 @@ test('browser mode syncs a Free project snapshot and exposes it through MCP', as
     const commandsResponse = await waitForCommands(port, projectId, token)
     const [command] = commandsResponse.commands
     assert.equal(command.filePath, 'main.tex')
+    assert.equal(command.expectedSha256, createHash('sha256').update('\\section{Application Landscapes}\nOriginal text.\n\\subsection{Clinical Detection}\nClinical text.\n\\section{Discussion}\nLater text.\n').digest('hex'))
     assert.match(command.content, /Improved text/)
     const resultResponse = await fetch(`http://127.0.0.1:${port}/v1/commands/${command.id}/result`, {
       method: 'POST',

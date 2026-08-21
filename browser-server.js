@@ -272,6 +272,9 @@ async function readProjectFile(projectId, filePath) {
 
 async function queueWrite(projectId, filePath, before, after, message) {
   if (before === after) return { changed: false, message: 'No content change.' }
+  const safePath = safeRelativePath(filePath)
+  const manifest = JSON.parse(await readFile(join(projectDirectory(projectId), MANIFEST_FILE), 'utf8'))
+  const syncedFile = manifest.files.find((file) => file.path === safePath)
   const id = randomUUID()
   let resolveWrite
   let rejectWrite
@@ -282,8 +285,8 @@ async function queueWrite(projectId, filePath, before, after, message) {
   pendingWrites.set(id, {
     id,
     projectId,
-    filePath: safeRelativePath(filePath),
-    expectedSha256: sha256(before),
+    filePath: safePath,
+    expectedSha256: syncedFile?.sha256 ?? sha256(before),
     content: after,
     message,
     status: 'pending',
