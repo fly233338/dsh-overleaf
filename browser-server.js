@@ -1,4 +1,5 @@
 import { createHash, randomUUID } from 'node:crypto'
+import { spawn } from 'node:child_process'
 import { createServer } from 'node:http'
 import { existsSync } from 'node:fs'
 import { mkdir, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises'
@@ -133,6 +134,7 @@ function toolDefinitions() {
   const projectName = { type: 'string', description: 'Configured Overleaf project ID' }
   return [
     tool('list_projects', 'List configured browser-synced Overleaf projects', {}),
+    tool('open_project', 'Open a configured Overleaf project in the default browser', { projectName }),
     tool('status_summary', 'Show browser sync status for an Overleaf project', { projectName }),
     tool('list_files', 'List files in a browser-synced Overleaf project', {
       projectName,
@@ -181,6 +183,11 @@ async function callTool(name, args, browserConfig) {
 
   const projectId = args.projectName || browserConfig.projectIds?.[0]
   assertAllowedProject(projectId, browserConfig)
+  if (name === 'open_project') {
+    const url = `https://www.overleaf.com/project/${encodeURIComponent(projectId)}`
+    openExternal(url)
+    return { opened: true, projectId, url }
+  }
   if (name === 'status_summary') return projectStatus(projectId)
   if (name === 'list_files') {
     const files = await listProjectFiles(projectId)
@@ -378,4 +385,11 @@ function setCors(response) {
 
 function sendMcp(value) {
   process.stdout.write(`${JSON.stringify(value)}\n`)
+}
+
+function openExternal(url) {
+  if (process.env.DSH_OVERLEAF_NO_OPEN === '1') return
+  const command = process.platform === 'win32' ? 'explorer.exe' : process.platform === 'darwin' ? 'open' : 'xdg-open'
+  const child = spawn(command, [url], { detached: true, stdio: 'ignore' })
+  child.unref()
 }

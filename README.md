@@ -120,7 +120,7 @@ Tell the model which project to handle:
 Please work on Overleaf project project-id-a and read its main.tex.
 ```
 
-The model first calls `mcp__overleaf__list_projects`, then passes the selected ID as `projectName` to subsequent Overleaf tools. In clients that expose MCP tool names differently, use the Overleaf `list_projects` tool first and keep the selected project ID as `projectName`. Write operations require an explicit `commitMessage` and push a Git commit to Overleaf.
+The model first calls `mcp__overleaf__list_projects`, then passes the selected ID as `projectName` to subsequent Overleaf tools. In clients that expose MCP tool names differently, use the Overleaf `list_projects` tool first and keep the selected project ID as `projectName`. In browser mode, `open_project` opens the selected project in the system default browser. Write operations require an explicit `commitMessage`; Git mode pushes a Git commit to Overleaf, while browser mode applies the edit to the currently open and unchanged file through the extension.
 
 Keep the token out of public source repositories and published package contents.
 

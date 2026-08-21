@@ -28,6 +28,7 @@ test('browser mode syncs a Free project snapshot and exposes it through MCP', as
       ...process.env,
       DSH_OVERLEAF_CONFIG_PATH: configPath,
       DSH_OVERLEAF_BROWSER_STATE_DIR: statePath,
+      DSH_OVERLEAF_NO_OPEN: '1',
     },
     stdio: ['pipe', 'pipe', 'pipe'],
   })
@@ -50,6 +51,14 @@ test('browser mode syncs a Free project snapshot and exposes it through MCP', as
     assert.equal(response.status, 200)
 
     const messages = mcpMessages(child)
+    child.stdin.write(`${JSON.stringify({ jsonrpc: '2.0', id: 0, method: 'tools/call', params: {
+      name: 'open_project',
+      arguments: { projectName: projectId },
+    } })}\n`)
+    const openResult = await messages.next()
+    const opened = JSON.parse(openResult.value.result.content[0].text)
+    assert.equal(opened.url, `https://www.overleaf.com/project/${projectId}`)
+
     child.stdin.write(`${JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: {
       name: 'get_section_content',
       arguments: { projectName: projectId, filePath: 'main.tex', sectionTitle: 'Application Landscapes' },
