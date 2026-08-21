@@ -18,20 +18,21 @@ Browse and read files from multiple Overleaf projects, inspect document sections
 
 ## Install
 
+If the DSH CLI is installed and available on `PATH`:
+
+```sh
+dsh plugin --profile web add dsh-overleaf
+dsh web
+```
+
 From a DSH source checkout:
 
-```
+```sh
 cd /path/to/deepseek-harness
 pnpm install
 pnpm run build
 pnpm dsh plugin --profile web add /path/to/dsh-overleaf
-```
-
-If the DSH CLI is installed and available on `PATH`:
-
-```
-dsh plugin --profile web add dsh-overleaf
-dsh web
+pnpm dsh web
 ```
 
 The npm installation command becomes available after this package is published.

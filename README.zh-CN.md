@@ -18,20 +18,21 @@
 
 ## 安装
 
+如果 DSH CLI 已安装并且可以从 `PATH` 使用：
+
+```sh
+dsh plugin --profile web add dsh-overleaf
+dsh web
+```
+
 从 DSH 源码目录安装：
 
-```
+```sh
 cd /path/to/deepseek-harness
 pnpm install
 pnpm run build
 pnpm dsh plugin --profile web add /path/to/dsh-overleaf
-```
-
-如果 DSH CLI 已安装并且可以从 `PATH` 使用：
-
-```
-dsh plugin --profile web add dsh-overleaf
-dsh web
+pnpm dsh web
 ```
 
 本项目发布后即可使用 npm 安装命令。
