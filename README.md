@@ -2,7 +2,7 @@
 
 [English](README.md) | [中文](README.zh-CN.md)
 
-Connect multiple Overleaf projects to [DeepSeek Harness (DSH)](https://github.com/deepseek-ai/deepseek-harness), Codex, or another MCP client through [OverleafMCP](https://github.com/mjyoo2/overleafmcp).
+Connect multiple Overleaf projects to [DeepSeek Harness (DSH)](https://github.com/deepseek-ai/deepseek-harness), Codex, or another MCP client. Premium accounts can use [OverleafMCP](https://github.com/mjyoo2/overleafmcp) over Git; Free accounts can use the included Chrome bridge.
 
 `dsh-overleaf` installs OverleafMCP as an npm dependency, starts it through MCP stdio, and exposes its tools to DSH or any client that can run a stdio MCP server. The OverleafMCP source is not copied into this project.
 
@@ -15,7 +15,8 @@ Browse and read files from multiple Overleaf projects, inspect document sections
 - DSH `0.1.0-rc.5` or a compatible release.
 - Codex or another client with stdio MCP support, if you use the standalone MCP entrypoint.
 - Node.js `22.19.0` or newer.
-- An Overleaf Git integration token.
+- Chrome when using the browser bridge for an Overleaf Free account.
+- An Overleaf Git integration token when using the Git transport.
 
 ## Install
 
@@ -65,12 +66,38 @@ args = ["D:/dsh-overleaf/mcp.js"]
 
 Restart Codex after changing the MCP configuration.
 
-## Configure
+## Overleaf Free accounts
 
-The plugin uses `dsh-overleaf.config.json` next to its `index.js`. If the file is missing, the plugin creates it on startup with this content. Fill in one shared token and one project ID per line:
+Free accounts use the browser transport because Overleaf reserves Git integration for Premium accounts. Set `transport` to `browser`, list the allowed project IDs, and leave `gitToken` empty:
 
 ```json
 {
+  "transport": "browser",
+  "gitToken": "",
+  "projectIds": ["your-project-id"],
+  "browser": {
+    "port": 47832,
+    "token": "generated-on-first-start"
+  }
+}
+```
+
+Start or restart Codex once so the random browser token is generated. Then:
+
+1. Open `chrome://extensions`, enable **Developer mode**, and choose **Load unpacked**.
+2. Select this package's `extension` directory.
+3. Open the extension options, copy `browser.token` from `dsh-overleaf.config.json`, then save and test the connection.
+4. Open the configured Overleaf project and click the extension icon to synchronize it.
+
+The extension uses the existing signed-in Overleaf browser session. Cookies stay in Chrome and are never written to the MCP configuration. Browser writes are limited to the text file currently open in Overleaf and are rejected when its content has changed since synchronization. Click the extension icon again after collaborator edits.
+
+## Configure
+
+The plugin uses `dsh-overleaf.config.json` next to its `index.js`. If the file is missing, the plugin creates it on startup. For Premium Git mode, use this configuration:
+
+```json
+{
+  "transport": "git",
   "gitToken": "your-overleaf-git-token",
   "projectIds": [
     "project-id-a",
@@ -81,7 +108,7 @@ The plugin uses `dsh-overleaf.config.json` next to its `index.js`. If the file i
 
 Get project IDs from the `<id>` in the Overleaf project URL. Create the Git token under [Overleaf Account Settings → Git Integration](https://docs.overleaf.com/integrations-and-add-ons/git-integration-and-github-synchronization/git/git-integration-authentication-tokens).
 
-Restart DSH or Codex after editing the file. The plugin reads it once at startup and generates the internal OverleafMCP project configuration. Do not edit the generated `.dsh-overleaf.projects.json` file.
+Restart DSH or Codex after editing the file. Git mode generates the internal OverleafMCP project configuration; do not edit `.dsh-overleaf.projects.json`. Browser mode stores synchronized project mirrors under `.dsh-overleaf-browser`, which is also generated and ignored by Git.
 
 The plugin does not read `.env` and does not require Overleaf environment variables.
 

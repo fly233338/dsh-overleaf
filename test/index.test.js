@@ -21,10 +21,17 @@ test('creates an empty user config and an empty MCP config', async () => {
 
     await prepareOverleafConfig(configPath, runtimeConfigPath)
 
-    assert.deepEqual(JSON.parse(await readFile(configPath, 'utf8')), {
+    const userConfig = JSON.parse(await readFile(configPath, 'utf8'))
+    assert.deepEqual({ ...userConfig, browser: { ...userConfig.browser, token: '' } }, {
+      transport: 'browser',
       gitToken: '',
       projectIds: [],
+      browser: {
+        port: 47832,
+        token: '',
+      },
     })
+    assert.match(userConfig.browser.token, /^[a-f0-9]{48}$/)
     assert.deepEqual(JSON.parse(await readFile(runtimeConfigPath, 'utf8')), {
       projects: {},
     })

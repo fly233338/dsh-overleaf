@@ -1,6 +1,7 @@
 import { createRequire } from 'node:module'
+import { fileURLToPath } from 'node:url'
 import { apply as applyMcpClient } from '@deepseek-ai/dsh-mcp-client'
-import { prepareOverleafConfig } from './config.js'
+import { prepareOverleafConfig, readOverleafConfig } from './config.js'
 
 const require = createRequire(import.meta.url)
 const overleafServer = require.resolve('@mjyoo2/overleaf-mcp')
@@ -15,7 +16,10 @@ export const name = 'dsh-overleaf'
 export const inject = ['tools']
 
 export async function apply(ctx) {
-  const runtimeConfigPath = await prepareOverleafConfig()
+  const config = await readOverleafConfig()
+  const runtimeConfigPath = config.transport === 'git'
+    ? await prepareOverleafConfig()
+    : null
 
   ctx.inject(['systemPrompt'], (promptCtx) => {
     promptCtx.systemPrompt.section({
@@ -29,10 +33,8 @@ export async function apply(ctx) {
     transport: 'stdio',
     serverName: SERVER_NAME,
     command: process.execPath,
-    args: [overleafServer],
-    env: {
-      OVERLEAF_PROJECTS_CONFIG: runtimeConfigPath,
-    },
+    args: [config.transport === 'browser' ? fileURLToPath(new URL('./mcp.js', import.meta.url)) : overleafServer],
+    env: runtimeConfigPath ? { OVERLEAF_PROJECTS_CONFIG: runtimeConfigPath } : {},
     cwd: process.cwd(),
     toolCallTimeoutMs: TOOL_CALL_TIMEOUT_MS,
     failOnStartupError: true,

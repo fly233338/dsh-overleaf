@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>dsh-overleaf Free Bridge</title>
+    <style>
+      body { font: 15px/1.5 system-ui, sans-serif; margin: 40px auto; max-width: 720px; padding: 0 20px; color: #17202c; }
+      label { display: block; margin: 18px 0 6px; font-weight: 650; }
+      input { box-sizing: border-box; width: 100%; padding: 10px 12px; border: 1px solid #aab2bd; border-radius: 4px; }
+      button { margin-top: 20px; padding: 10px 16px; border: 0; border-radius: 4px; background: #16803a; color: white; font-weight: 650; }
+      #status { margin-left: 12px; }
+    </style>
+  </head>
+  <body>
+    <h1>dsh-overleaf Free Bridge</h1>
+    <p>Connect this extension only to the local bridge started by dsh-overleaf.</p>
+    <label for="bridgeUrl">Bridge URL</label>
+    <input id="bridgeUrl" value="http://127.0.0.1:47832">
+    <label for="bridgeToken">Browser token</label>
+    <input id="bridgeToken" type="password" autocomplete="off">
+    <button id="save" type="button">Save and test</button><span id="status"></span>
+    <script src="options.js"></script>
+  </body>
+</html>

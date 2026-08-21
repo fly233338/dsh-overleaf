@@ -4,4 +4,5 @@ pnpm-workspace.yaml
 *.tgz
 dsh-overleaf.config.json
 .dsh-overleaf.projects.json
+.dsh-overleaf-browser/
 .env*
