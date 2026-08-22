@@ -2,9 +2,9 @@
 
 [English](README.md) | [中文](README.zh-CN.md)
 
-通过 [OverleafMCP](https://github.com/mjyoo2/overleafmcp) 将多个 Overleaf 项目连接到 [DeepSeek Harness（DSH）](https://github.com/deepseek-ai/deepseek-harness)。
+通过 [@fly233338/overleaf-mcp](https://github.com/fly233338/overleaf-mcp) 将多个 Overleaf 项目连接到 [DeepSeek Harness（DSH）](https://github.com/deepseek-ai/deepseek-harness)。
 
-`dsh-overleaf` 将 OverleafMCP 作为 npm 依赖安装，通过 MCP stdio 启动它，并将其工具暴露给 DSH。本项目不复制 OverleafMCP 的源代码。
+`dsh-overleaf` 将 [@fly233338/overleaf-mcp](https://www.npmjs.com/package/@fly233338/overleaf-mcp) 作为 npm 依赖安装，通过 MCP stdio 启动它，并将其工具暴露给 DSH。本项目不复制 OverleafMCP 的源代码。
 
 ## 功能
 
@@ -76,7 +76,7 @@ Please work on Overleaf project project-id-a and read its main.tex.
 ## 链接
 
 - [项目仓库](https://github.com/fly233338/dsh-overleaf)
-- [OverleafMCP](https://github.com/mjyoo2/overleafmcp)
+- [@fly233338/overleaf-mcp](https://github.com/fly233338/overleaf-mcp)（[npm](https://www.npmjs.com/package/@fly233338/overleaf-mcp)）
 - [DSH 插件指南](https://deepseek-harness.github.io/deepseek-harness/develop/basic/publish)
 - insert:
     - id: dsh-overleaf

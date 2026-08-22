@@ -2,9 +2,9 @@
 
 [English](README.md) | [中文](README.zh-CN.md)
 
-Connect multiple Overleaf projects to [DeepSeek Harness (DSH)](https://github.com/deepseek-ai/deepseek-harness) through [OverleafMCP](https://github.com/mjyoo2/overleafmcp).
+Connect multiple Overleaf projects to [DeepSeek Harness (DSH)](https://github.com/deepseek-ai/deepseek-harness) through [@fly233338/overleaf-mcp](https://github.com/fly233338/overleaf-mcp).
 
-`dsh-overleaf` installs OverleafMCP as an npm dependency, starts it through MCP stdio, and exposes its tools to DSH. The OverleafMCP source is not copied into this project.
+`dsh-overleaf` installs [@fly233338/overleaf-mcp](https://www.npmjs.com/package/@fly233338/overleaf-mcp) as an npm dependency, starts it through MCP stdio, and exposes its tools to DSH. The OverleafMCP source is not copied into this project.
 
 ## Features
 
@@ -76,7 +76,7 @@ The current version supports multiple Overleaf projects through one MCP tool gro
 ## Links
 
 - [Project repository](https://github.com/fly233338/dsh-overleaf)
-- [OverleafMCP](https://github.com/mjyoo2/overleafmcp)
+- [@fly233338/overleaf-mcp](https://github.com/fly233338/overleaf-mcp) ([npm](https://www.npmjs.com/package/@fly233338/overleaf-mcp))
 - [DSH plugin guide](https://deepseek-harness.github.io/deepseek-harness/develop/basic/publish)
 - insert:
     - id: dsh-overleaf
