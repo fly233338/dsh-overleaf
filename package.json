@@ -1,6 +1,6 @@
 {
   "name": "dsh-overleaf",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "DSH bundle that exposes multiple Overleaf projects through OverleafMCP",
   "repository": {
     "type": "git",

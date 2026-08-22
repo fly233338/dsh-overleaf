@@ -39,7 +39,7 @@ pnpm dsh web
 
 ## 配置
 
-插件使用其 `index.js` 所在目录中的 `dsh-overleaf.config.json`。如果文件不存在，插件会在启动时创建它。每行填写一个项目 ID，并使用同一个 token：
+插件将 `dsh-overleaf.config.json` 保存在 `$DSH_HOME/dsh-overleaf/` 中。如果未设置 `DSH_HOME`，则使用 `~/.dsh/dsh-overleaf/`。目录和文件不存在时会在启动时创建。每行填写一个项目 ID，并使用同一个 token：
 
 ```json
 {
@@ -53,7 +53,7 @@ pnpm dsh web
 
 项目 ID 可以从 Overleaf 项目 URL 中的 `<id>` 获取。请在 [Overleaf Account Settings → Git Integration](https://docs.overleaf.com/integrations-and-add-ons/git-integration-and-github-synchronization/git/git-integration-authentication-tokens) 中创建 Git token。
 
-编辑配置文件后重启 DSH。插件只在启动时读取配置，并生成 OverleafMCP 的内部项目配置。不要编辑生成的 `.dsh-overleaf.projects.json` 文件。
+编辑配置文件后重启 DSH。插件只在启动时读取配置，并在同一目录生成 OverleafMCP 的内部配置文件 `.dsh-overleaf.projects.json`。不要编辑生成的文件。
 
 插件不读取 `.env`，也不要求设置 Overleaf 环境变量。
 

@@ -16,8 +16,9 @@ test('creates an empty user config and an empty MCP config', async () => {
   const directory = await makeTestDirectory()
 
   try {
-    const configPath = join(directory, 'dsh-overleaf.config.json')
-    const runtimeConfigPath = join(directory, '.dsh-overleaf.projects.json')
+    const dataDirectory = join(directory, 'dsh-overleaf')
+    const configPath = join(dataDirectory, 'dsh-overleaf.config.json')
+    const runtimeConfigPath = join(dataDirectory, '.dsh-overleaf.projects.json')
 
     await prepareOverleafConfig(configPath, runtimeConfigPath)
 
@@ -46,6 +47,10 @@ test('converts a shared token and project ID list to OverleafMCP config', async 
     }))
     await prepareOverleafConfig(configPath, runtimeConfigPath)
 
+    assert.deepEqual(JSON.parse(await readFile(configPath, 'utf8')), {
+      gitToken: 'test-token',
+      projectIds: ['project-a', 'project-b'],
+    })
     assert.deepEqual(JSON.parse(await readFile(runtimeConfigPath, 'utf8')), {
       projects: {
         'project-a': {

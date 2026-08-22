@@ -1,8 +1,8 @@
 import { existsSync } from 'node:fs'
-import { readFile, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { homedir } from 'node:os'
 import { apply as applyMcpClient } from '@deepseek-ai/dsh-mcp-client'
 
 const require = createRequire(import.meta.url)
@@ -12,9 +12,10 @@ const SERVER_NAME = 'overleaf'
 const TOOL_CALL_TIMEOUT_MS = 60_000
 const CONFIG_FILE_NAME = 'dsh-overleaf.config.json'
 const RUNTIME_CONFIG_FILE_NAME = '.dsh-overleaf.projects.json'
-const PLUGIN_DIRECTORY = dirname(fileURLToPath(import.meta.url))
-const CONFIG_PATH = join(PLUGIN_DIRECTORY, CONFIG_FILE_NAME)
-const RUNTIME_CONFIG_PATH = join(PLUGIN_DIRECTORY, RUNTIME_CONFIG_FILE_NAME)
+const DSH_HOME = process.env.DSH_HOME || join(homedir(), '.dsh')
+const DATA_DIRECTORY = join(DSH_HOME, 'dsh-overleaf')
+const CONFIG_PATH = join(DATA_DIRECTORY, CONFIG_FILE_NAME)
+const RUNTIME_CONFIG_PATH = join(DATA_DIRECTORY, RUNTIME_CONFIG_FILE_NAME)
 const EMPTY_CONFIG = { gitToken: '', projectIds: [] }
 
 export const OVERLEAF_SYSTEM_PROMPT =
@@ -39,6 +40,9 @@ export async function prepareOverleafConfig(
   configPath = CONFIG_PATH,
   runtimeConfigPath = RUNTIME_CONFIG_PATH,
 ) {
+  await mkdir(dirname(configPath), { recursive: true })
+  await mkdir(dirname(runtimeConfigPath), { recursive: true })
+
   if (!existsSync(configPath)) {
     await writeFile(configPath, `${JSON.stringify(EMPTY_CONFIG, null, 2)}\n`, 'utf8')
   }
