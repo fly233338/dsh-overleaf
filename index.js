@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url'
 import { apply as applyMcpClient } from '@deepseek-ai/dsh-mcp-client'
 
 const require = createRequire(import.meta.url)
-const overleafServer = require.resolve('@mjyoo2/overleaf-mcp')
+const overleafServer = require.resolve('@fly233338/overleaf-mcp/bin')
 
 const SERVER_NAME = 'overleaf'
 const TOOL_CALL_TIMEOUT_MS = 60_000
