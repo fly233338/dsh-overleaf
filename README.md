@@ -12,7 +12,7 @@ Browse and read files from multiple Overleaf projects, inspect document sections
 
 ## Requirements
 
-- DSH `0.1.0-rc.5` or a compatible release.
+- DSH `0.1.0-rc.5` or `0.2.x` (verified against `0.2.0-rc.2`).
 - Node.js `22.19.0` or newer.
 - An Overleaf Git integration token.
 
